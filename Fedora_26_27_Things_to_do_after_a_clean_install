@@ -57,3 +57,14 @@ List of things to do after a fresh installation of Fedora 26-27
 	Firefox			Alt + F
 	Google-Chrome	Alt + C
 	GEdit			Alt + G
+
+### Run script "Fedora_26_27_Configuration_Update"
+
+### Run script "Fedora_26_27_Apps_Installation"
+
+### Manually, install if needed:
+    LibreOffice
+    Ffmpeg from git, following the script:
+        "Install ffmpeg from Git"
+    Install Video editor "Lightworks"
+    
