@@ -13,6 +13,12 @@ update="update -y"
 ##### Begin
 clear
 
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root" 1>&2
+   echo "Exiting the Configuration..."
+   exit 1
+fi
+
 echo
 echo "##### Cleaning files in dnf cache..."
 	dnf clean all
