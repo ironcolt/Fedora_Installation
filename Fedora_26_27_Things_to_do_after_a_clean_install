@@ -4,7 +4,7 @@ List of things to do after a fresh installation of Fedora 26-27
 	su
 	visudo
 
-### Disable Selinux setting
+### Edit Selinux settings
 	vi /etc/selinux/config
 	SELINUX=enforcing	==>		SELINUX=disabled
 
@@ -14,7 +14,13 @@ List of things to do after a fresh installation of Fedora 26-27
 
 ### Configure profiles for gnome-terminal
 	No showing menu bar by default
-	Gray
+
+    Rename original Profile
+        unamed      ==>     Default
+
+    Clone the default profile to create a new one "Gray"
+
+    Profile "Gray"
 		General
 			Font monospace regular 10
 			115 columns x 25 rows

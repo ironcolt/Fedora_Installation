@@ -1,16 +1,20 @@
 #!/bin/bash
 
-##### Script to install the basic configuration for Fedora 26/27
-##### It must be run as root or sudo
-##### It must be executed only once, after the manual basic configuration following installation
+##### Fedora_26_27_Configuration_Update
 
-clear
-### Variables
-install="install -y "
+##### Script to install the basic configuration for Fedora 26/27
+##### It must be run as root or sudo privileges
+##### It must be executed only once, after the manual basic configuration after the fresh installation
+
+##### Variables
+install="install -y"
 update="update -y"
 
+##### Begin
+clear
+
 echo
-echo "##### Cleaning files in dnf chache..."
+echo "##### Cleaning files in dnf cache..."
 	dnf clean all
 echo "##### Done #####"
 echo
@@ -28,14 +32,13 @@ echo "##### Installing repos..."
 	dnf $install curl
 	dnf $install dnf-plugins-core
 	dnf $install yumex-dnf
-	#dnf $install vim
 	rpm -ivh http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
 	rpm -ivh https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 	dnf config-manager --add-repo=http://negativo17.org/repos/fedora-spotify.repo
 echo "##### Done #####"
 echo
 
-echo "##### Downloading utilities ..."
+echo "##### Installing utilities..."
 ###	Utilities for installation
 	dnf $install gnome-tweak-tool
 	dnf $install https://dl.folkswithhats.org/fedora/$(rpm -E %fedora)/RPMS/folkswithhats-release.noarch.rpm
@@ -46,10 +49,9 @@ echo "##### Downloading utilities ..."
 	dnf $install make gcc
 
 ###	Install libelf utilities
-	### Uncomment following line if the script is running on Virtual Guests.
+	### Uncomment following lines if the script is running on Virtual Guests.
 	#dnf $install elfutils-libelf-devel*
-	dnf $install elfutils*
-
+	#dnf $install elfutils*
 echo "##### Done #####"
 echo
 

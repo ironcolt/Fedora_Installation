@@ -1,22 +1,27 @@
 #!/bin/bash
 
-##### Script to install useful applications for Fedora 26/27
-##### It must be run as root or sudo
-##### Add, comment or uncomment lines whether the need to install, or not, the application shown
+##### Fedora_26_27_Apps_Installation
 
-clear
+# Script to install useful applications for Fedora 26/27
+# It must be run as root or sudo privileges
+# Add, comment or uncomment Applications depending on the need to use them
 
-### Variables
+# Syntax: bash Fedora_26_27_Apps_Installation.sh user
+# Where "user" is the user who is being used to install the apps
+
+##### Variables
 user=$1
-down_path="/home/""$user""/Downloads"
+down_path=""
 install="install -y"
+
+##### Begin
+clear
+down_path="/home/""$user""/Downloads"
 
 if [[ ! -d "$down_path" ]]; then
 	mkdir "$down_path"
 	chown "$user":"$user" "$down_path"
 fi
-
-#dnf clean all
 
 echo "##### Installing Apps..."
 ###	Management tools
@@ -34,9 +39,10 @@ echo "##### Installing Apps..."
 	dnf $install firewall-config
 	dnf $install dconf dconf-editor
 	dnf $install net-tools ethtool NetworkManager-tui
+    dnf $install wine
 	systemctl enable firewalld.service
 	systemctl status firewalld
-	dnf $install wine
+    echo
 
 ###	File system management tools
 	dnf $install gnome-disk-utility
@@ -117,7 +123,6 @@ echo "##### Installing Apps..."
 	dnf $install converseen
 	dnf $install digikam
 	dnf $install rawtherapee
-	dnf $install fspot			## search
 
 ###	Audio players and converters
 	dnf $install audacity-nonfree
@@ -139,7 +144,6 @@ echo "##### Installing Apps..."
 	dnf $install avidemux
 	dnf $install pitivi
 	dnf $install blender
-#	dnf $install lightworks		## search
 
 ###	Internet
 	dnf $install firefox
@@ -199,11 +203,11 @@ echo "##### Installing Apps..."
 	dnf $install tcpdump
 
 ###	Performance and monitoring tools
-	dnf $install bleachbit		## Junk cleaner
-	dnf $install preload			## Daemon that gathers info from the processes running on the system
-	dnf $install irqbalance		## Daemon that evenly distributes IRQ loads across multiple cpu's
+	dnf $install bleachbit	    ## Junk cleaner
+	dnf $install preload		## Daemon that gathers info from the processes running on the system
+	dnf $install irqbalance     ## Daemon that evenly distributes IRQ loads across multiple cpu's
 	dnf $install tuned			## Tunes dynamically the system
-	dnf $install glances			## Gets info from the system
+	dnf $install glances		## Gets info from the system
 	dnf $install htop
 	dnf $install itop
 	dnf $install iotop
@@ -250,6 +254,8 @@ echo "##### Installing Apps..."
 	dnf $install xine-lib-extras
 	dnf $install xine-lib-extras-freeworld
 	dnf $install k3b-extras-freeworld
+echo "##### Done #####"
+echo
 
 ###	Cleaning
 	dnf clean all
