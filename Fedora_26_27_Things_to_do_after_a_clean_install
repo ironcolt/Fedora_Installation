@@ -1,0 +1,53 @@
+List of things to do after a fresh installation of Fedora 26-27
+
+###	Edit /etc/sudoers file to grant sudo to normal users
+	su
+	visudo
+
+### Disable Selinux setting
+	vi /etc/selinux/config
+	SELINUX=enforcing	==>		SELINUX=disabled
+
+### Copy .bashrc for both, user and root, from backups
+
+### Copy .git files from a backup to user's home
+
+### Configure profiles for gnome-terminal
+	No showing menu bar by default
+	Gray
+		General
+			Font monospace regular 10
+			115 columns x 25 rows
+			Rewrap on resize actived
+		Colors
+			Default color white on gray 2
+			Bold color active
+			Cursor color white on red 3
+			Highlight color orange 2 on blue 3
+			Built-in schema Tango
+		Scrolling
+			Unlimit scrollback
+
+###	Configure GEdit
+	View
+		Display line numbers
+		Display right margin at column (80)
+		Display statusbar
+		Highlight current line
+		Highlight matching brackets
+	Editor
+		Tab with (4)
+		Enable automatic indentation
+		Autosave files every (10) minutes
+	Fonts and Colors
+		Font monospace regular 10
+		Oblivion theme
+
+### Install vim
+	dnf install vim
+
+### Add shortcuts to keyboard
+	Terminal		Win + T
+	Firefox			Alt + F
+	Google-Chrome	Alt + C
+	GEdit			Alt + G
