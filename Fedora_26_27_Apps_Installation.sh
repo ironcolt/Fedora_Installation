@@ -6,11 +6,11 @@
 # It must be run as root or sudo privileges
 # Add, comment or uncomment Applications depending on the need to use them
 
-# Syntax: bash Fedora_26_27_Apps_Installation.sh user
-# Where "user" is the user who is being used to install the apps
+# Syntax: bash Fedora_26_27_Apps_Installation.sh username
+# Where "username" is the user who is being used to install the apps
 
 ##### Variables
-user=$1
+user=""
 down_path=""
 install="install -y"
 
@@ -23,6 +23,13 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
+if [[ $# == 0 ]]; then
+    echo \"username\" " is missing, please verify and try again"
+    echo "Syntax: "\""$0 " username\"
+    exit 1
+fi
+
+user=$1
 down_path="/home/""$user""/Downloads"
 
 if [[ ! -d "$down_path" ]]; then
