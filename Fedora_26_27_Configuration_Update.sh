@@ -9,6 +9,8 @@
 ##### Variables
 install="install -y"
 update="update -y"
+input=""
+vm=0
 
 ##### Begin
 clear
@@ -19,6 +21,16 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
+echo -n "Is this script running on a virtual machine [y/n/q]? "
+read input
+case $input in
+    [yY] )  vm=1;;
+    [qQ] )  echo "You decided to quit, exiting the installation..."
+            echo
+            exit 1;;
+    * )     vm=0;;
+esac
+
 echo
 echo "##### Cleaning files in dnf cache..."
 	dnf clean all
@@ -27,8 +39,8 @@ echo
 
 echo "##### Modifying dnf.config file..."
 ###	Modify dnf config file
-	echo "fastestmirror=true" >> /etc/dnf/dnf.conf
-	echo "deltarpm=false" >> /etc/dnf/dnf.conf
+    echo "fastestmirror=true" >> /etc/dnf/dnf.conf
+    echo "deltarpm=false" >> /etc/dnf/dnf.conf
 echo "##### Done #####"
 echo
 
@@ -55,9 +67,11 @@ echo "##### Installing utilities..."
 	dnf $install make gcc
 
 ###	Install libelf utilities
-	### Uncomment following lines if the script is running on Virtual Guests.
-	#dnf $install elfutils-libelf-devel*
-	#dnf $install elfutils*
+	### Installs only if the script is running on Virtual Guests.
+if [[ $vm == 1 ]]; then
+    dnf $install elfutils-libelf-devel*
+    dnf $install elfutils*
+fi
 echo "##### Done #####"
 echo
 
@@ -66,6 +80,7 @@ echo "##### Activating ssh daemon..."
 	systemctl enable sshd
 	systemctl start sshd
 	systemctl status sshd
+    echo
 echo "##### Done #####"
 echo
 
@@ -76,11 +91,13 @@ echo "##### Done #####"
 echo
 
 echo "##### Updating Kernels for virtual machines..."
-###	Install all left kernels
-	### Uncomment following line if the script is running on Virtual Guests.
-	#dnf $install kernel*
+###	Installs only if the script is running on Virtual Guests.
+if [[ $vm == 1 ]]; then
+    dnf $install kernel*
+fi
 echo "##### Done #####"
+
 echo
-echo "********** Update is done, please reboot the system. **********"
+echo "********** Configuration and Update are done, please reboot the system **********"
 echo
 exit
