@@ -24,11 +24,12 @@ fi
 echo -n "Is this script running on a virtual machine [y/n/q]? "
 read input
 case $input in
-    [yY] )  vm=1;;
-    [qQ] )  echo "You decided to quit, exiting the installation..."
-            echo
-            exit 1;;
-    * )     vm=0;;
+    [yY] )	vm=1;;
+    [qQ] )	echo "You decided to quit."
+    			echo "Exiting the Configuration..."
+    			echo
+    			exit 1;;
+    * )			vm=0;;
 esac
 
 echo
