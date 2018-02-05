@@ -196,6 +196,7 @@ echo "##### Installing Apps..."
 ###	Development tools
 	dnf $install unetbootin
 	dnf $install mediawriter
+	dnf $install liveusb-creator
 	dnf $install dia
 	dnf $install diffuse
 
