@@ -1,0 +1,17 @@
+[user]
+	name = Bernardo FajardoMaldonado
+	email = ironcolt@gmail.com
+[color]
+	ui = true
+	status = auto
+	branch = auto
+[core]
+	editor = vim
+	excludesfile = /home/potro/.gitignore_global
+	pager = less
+[branch]
+	autosetuprebase = always
+[merge]
+	tool = vimdiff
+[commit]
+	template = /home/potro/.gitmessage
