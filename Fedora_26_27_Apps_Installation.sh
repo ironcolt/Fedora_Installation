@@ -13,6 +13,7 @@
 user=""
 down_path=""
 install="install -y"
+input=""
 
 ##### Begin
 clear
@@ -55,7 +56,7 @@ echo "##### Installing Apps..."
 	dnf $install net-tools ethtool NetworkManager-tui
     dnf $install wine
 	systemctl enable firewalld.service
-	systemctl status firewalld
+#	systemctl status firewalld
     echo
 
 ###	File system management tools
@@ -73,7 +74,7 @@ echo "##### Installing Apps..."
 ###	Running samba service
 	systemctl enable smb.service
 	systemctl start smb.service
-	systemctl status smb.service
+#	systemctl status smb.service
 	echo
 
 ###	Archiving Tools
@@ -190,7 +191,7 @@ echo "##### Installing Apps..."
 	dnf $install simple-scan
 	dnf $install cups
 	systemctl enable cups.service
-	systemctl status cups.service
+#	systemctl status cups.service
 	echo
 
 ###	Development tools
@@ -206,7 +207,7 @@ echo "##### Installing Apps..."
 	dnf $install clusterssh
 	systemctl enable sshd.service
 	systemctl start sshd.service
-	systemctl status sshd.service
+#	systemctl status sshd.service
 	echo
 
 ###	Security tools
@@ -281,6 +282,23 @@ echo
 	echo
 	echo
 	screenfetch
+
+### Displaying the status of the services activated
+    echo -n "Do you want to check the status of the services [y/n] ? "
+    read input
+    case $input in
+        [yY] )	echo "Displaying services status..."
+                echo
+                systemctl status firewalld
+                echo
+                systemctl status smb.service
+                echo
+                systemctl status cups.service
+                echo
+                systemctl status sshd.service
+                echo;;
+        * )     echo;;
+    esac
 
 ### Finishes script
 	echo
