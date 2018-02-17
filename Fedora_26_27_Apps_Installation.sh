@@ -56,7 +56,6 @@ echo "##### Installing Apps..."
 	dnf $install net-tools ethtool NetworkManager-tui
     dnf $install wine
 	systemctl enable firewalld.service
-#	systemctl status firewalld
     echo
 
 ###	File system management tools
@@ -74,7 +73,6 @@ echo "##### Installing Apps..."
 ###	Running samba service
 	systemctl enable smb.service
 	systemctl start smb.service
-#	systemctl status smb.service
 	echo
 
 ###	Archiving Tools
@@ -191,7 +189,6 @@ echo "##### Installing Apps..."
 	dnf $install simple-scan
 	dnf $install cups
 	systemctl enable cups.service
-#	systemctl status cups.service
 	echo
 
 ###	Development tools
@@ -207,7 +204,6 @@ echo "##### Installing Apps..."
 	dnf $install clusterssh
 	systemctl enable sshd.service
 	systemctl start sshd.service
-#	systemctl status sshd.service
 	echo
 
 ###	Security tools
