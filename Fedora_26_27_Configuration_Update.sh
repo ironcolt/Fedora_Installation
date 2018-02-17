@@ -4,7 +4,7 @@
 
 ##### Script to install the basic configuration for Fedora 26/27
 ##### It must be run as root or sudo privileges
-##### It must be executed only once, after the manual basic configuration after the fresh installation
+##### It must be executed only once, after the manual basic configuration done after a fresh installation
 
 ##### Variables
 install="install -y"
@@ -27,10 +27,10 @@ read input
 case $input in
     [yY] )	vm=1;;
     [qQ] )	echo "You decided to quit."
-    			echo "Exiting the Configuration..."
-    			echo
-    			exit 1;;
-    * )			vm=0;;
+    		echo "Exiting the Configuration..."
+    		echo
+    		exit 1;;
+    * )		vm=0;;
 esac
 
 echo
