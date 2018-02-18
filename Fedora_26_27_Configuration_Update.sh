@@ -35,41 +35,42 @@ esac
 
 echo
 echo "##### Cleaning files in dnf cache..."
-	dnf clean all
+dnf clean all
 echo "##### Done #####"
 echo
 
 echo "##### Modifying dnf.config file..."
 ###	Modify dnf config file
-    echo "fastestmirror=true" >> /etc/dnf/dnf.conf
-    echo "deltarpm=false" >> /etc/dnf/dnf.conf
+echo "fastestmirror=true" >> /etc/dnf/dnf.conf
+echo "deltarpm=false" >> /etc/dnf/dnf.conf
 echo "##### Done #####"
 echo
 
 echo "##### Installing repos..."
 ###	Package managers and repos
-	dnf $install wget
-	dnf $install curl
-	dnf $install dnf-plugins-core
-	dnf $install yumex-dnf
-	rpm -ivh http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
-	rpm -ivh https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-	dnf config-manager --add-repo=http://negativo17.org/repos/fedora-spotify.repo
+dnf $install wget
+dnf $install curl
+dnf $install dnf-plugins-core
+dnf $install yumex-dnf
+rpm -ivh http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+rpm -ivh https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+dnf config-manager --add-repo=http://negativo17.org/repos/fedora-spotify.repo
 echo "##### Done #####"
 echo
 
 echo "##### Installing utilities..."
 ###	Utilities for installation
-	dnf $install gnome-tweak-tool
-	dnf $install https://dl.folkswithhats.org/fedora/$(rpm -E %fedora)/RPMS/folkswithhats-release.noarch.rpm
-	dnf $install fedy
-	dnf $install chrome-gnome-shell
+dnf $install gnome-tweak-tool
+dnf $install https://dl.folkswithhats.org/fedora/$(rpm -E %fedora)/RPMS/folkswithhats-release.noarch.rpm
+dnf $install fedy
+dnf $install chrome-gnome-shell
 
 ###	Install compilers and utilities
-	dnf $install make gcc
+dnf $install make gcc kmod
+dnf $install kmod-devel*
 
 ###	Install libelf utilities
-	### Installs only if the script is running on Virtual Guests.
+### Installs only if the script is running on Virtual Guests.
 if [[ $vm == 1 ]]; then
     dnf $install elfutils-libelf-devel*
     dnf $install elfutils*
@@ -79,16 +80,14 @@ echo
 
 echo "##### Activating ssh daemon..."
 ###	Activate ssh
-	systemctl enable sshd
-	systemctl start sshd
-#	systemctl status sshd
-    echo
+systemctl enable sshd
+systemctl start sshd
 echo "##### Done #####"
 echo
 
 echo "##### Updating the system..."
 ###	System update
-	dnf $update
+dnf $update
 echo "##### Done #####"
 echo
 
@@ -100,15 +99,17 @@ fi
 echo "##### Done #####"
 
 ### Displaying the status of the services activated
-    echo -n "Do you want to check the status of the services [y/n] ? "
-    read input
-    case $input in
-        [yY] )	echo "Displaying services status..."
-                echo
-                systemctl status sshd.service
-                echo;;
-        * )     echo;;
-    esac
+echo
+echo -n "Do you want to check services status [y/n]? "
+read input
+case $input in
+    [yY] )	echo
+            echo "Displaying services status..."
+            echo
+            systemctl status sshd.service
+            echo;;
+    * )     echo;;
+esac
 
 echo
 echo "********** Configuration and Update are done, please reboot the system **********"
