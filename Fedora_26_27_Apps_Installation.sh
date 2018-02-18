@@ -56,7 +56,6 @@ echo "##### Installing Apps..."
 	dnf $install net-tools ethtool NetworkManager-tui
     dnf $install wine
 	systemctl enable firewalld.service
-    echo
 
 ###	File system management tools
 	dnf $install gnome-disk-utility
@@ -73,7 +72,6 @@ echo "##### Installing Apps..."
 ###	Running samba service
 	systemctl enable smb.service
 	systemctl start smb.service
-	echo
 
 ###	Archiving Tools
 	dnf $install unzip p7zip*
@@ -189,7 +187,6 @@ echo "##### Installing Apps..."
 	dnf $install simple-scan
 	dnf $install cups
 	systemctl enable cups.service
-	echo
 
 ###	Development tools
 	dnf $install unetbootin
@@ -202,9 +199,6 @@ echo "##### Installing Apps..."
 	dnf $install putty
 	dnf $install openssh-server openssh-clients
 	dnf $install clusterssh
-	systemctl enable sshd.service
-	systemctl start sshd.service
-	echo
 
 ###	Security tools
 	dnf $install nmap
@@ -290,8 +284,6 @@ echo
                 systemctl status smb.service
                 echo
                 systemctl status cups.service
-                echo
-                systemctl status sshd.service
                 echo;;
         * )     echo;;
     esac
