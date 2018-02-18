@@ -19,14 +19,18 @@ input=""
 clear
 
 if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root" 1>&2
-   echo "Exiting the Configuration..."
-   exit 1
+    echo "Fail to run the script"
+    echo "This script must be run as root" 1>&2
+    echo "Exiting the Configuration..."
+    echo
+    exit 1
 fi
 
 if [[ $# == 0 ]]; then
+    echo "Fail to run the script"
     echo \"username\" " is missing, please verify and try again"
-    echo "Syntax: "\""$0 " username\"
+    echo "Syntax: "\""$0 " \"username\"\"
+    echo "Exiting the Configuration..."
     exit 1
 fi
 
@@ -38,7 +42,7 @@ if [[ ! -d "$down_path" ]]; then
 	chown "$user":"$user" "$down_path"
 fi
 
-echo "##### Installing Apps..."
+echo "##### Installing Apps... #####"
 ###	Management tools
 dnf $install system-config-bind
 dnf $install system-config-firewall*
@@ -260,41 +264,63 @@ dnf $install lsdvd
 dnf $install xine-lib-extras
 dnf $install xine-lib-extras-freeworld
 dnf $install k3b-extras-freeworld
+
+###	Stuff
+###	Add the lines for the Apps you want to install here using the Syntax
+###	"dnf $install app_name"
+echo
+echo
 echo "##### Done #####"
 echo
 
 ###	Cleaning
 dnf clean all
+echo "##### Done cleaning dnf cache #####"
 echo
 
 ###	Verifying repos installed and hardware characteristics
 dnf repolist
+echo "##### Done repolist #####"
 echo
 echo
-screenfetch
+echo "Complete system summary"
+echo
+echo
+sudo -u $USER "screenfetch"
+echo
 
 ### Displaying the status of the services activated
 echo
 echo -n "Do you want to check services status [y/n]? "
 read input
 case $input in
-    [yY] )	echo
-            echo "Displaying services status..."
-            echo
-            systemctl status firewalld
-            echo
-            systemctl status smb.service
-            echo
-            systemctl status cups.service
-            echo;;
-    * )     echo;;
+	[yY] )	echo
+			echo "Displaying services status..."
+			echo "Press \"q\" to continue..."
+			echo
+			sudo -u $USER "systemctl status firewalld"
+			echo
+			sudo -u $USER "systemctl status smb.service"
+			echo
+			sudo -u $USER "systemctl status cups.service"
+			echo;;
+	* )		echo;;
 esac
 
 ### Finishes script
 echo
 echo
-echo "##### Done #####"
+echo "##### Done The Installation of Apps #####"
+echo
+echo
+echo "*************************************************************"
+echo "Run this script again every time you need to install new Apps"
+echo "Just add the lines to install the Apps in the correct section"
+echo "Or use the section \"Stuff\" created for that purpose."
+echo "*************************************************************"
+echo
 echo
 echo "********** Installation is done, please reboot the system. **********"
+echo
 echo
 exit
