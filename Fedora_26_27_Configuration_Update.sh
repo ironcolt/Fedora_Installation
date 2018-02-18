@@ -81,7 +81,7 @@ echo "##### Activating ssh daemon..."
 ###	Activate ssh
 	systemctl enable sshd
 	systemctl start sshd
-	systemctl status sshd
+#	systemctl status sshd
     echo
 echo "##### Done #####"
 echo
@@ -98,6 +98,17 @@ if [[ $vm == 1 ]]; then
     dnf $install kernel*
 fi
 echo "##### Done #####"
+
+### Displaying the status of the services activated
+    echo -n "Do you want to check the status of the services [y/n] ? "
+    read input
+    case $input in
+        [yY] )	echo "Displaying services status..."
+                echo
+                systemctl status sshd.service
+                echo;;
+        * )     echo;;
+    esac
 
 echo
 echo "********** Configuration and Update are done, please reboot the system **********"
