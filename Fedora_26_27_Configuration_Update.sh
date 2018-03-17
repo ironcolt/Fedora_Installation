@@ -100,19 +100,19 @@ if [[ $vm == 1 ]]; then
     echo "##### Done #####"
 fi
 
+### Displaying the status of the services activated
 echo
 echo -n "Do you want to check services status [y/n]? "
 read input
 case $input in
     [yY] )	echo
-            ### Displaying the status of the services activated
             echo "Displaying services status..."
             echo
             systemctl status sshd.service
-            echo "##### Done #####"
             echo;;
     * )     echo;;
 esac
+echo "##### Done #####"
 
 echo
 echo "********** Configuration and Update are done, please reboot the system **********"
