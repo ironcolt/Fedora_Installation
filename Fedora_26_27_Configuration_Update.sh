@@ -52,8 +52,10 @@ dnf $install wget
 dnf $install curl
 dnf $install dnf-plugins-core
 dnf $install yumex-dnf
+### RPMFusion repos
 rpm -ivh http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
 rpm -ivh https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+### Repo to install Spotify app
 dnf config-manager --add-repo=http://negativo17.org/repos/fedora-spotify.repo
 echo "##### Done #####"
 echo
@@ -91,22 +93,23 @@ dnf $update
 echo "##### Done #####"
 echo
 
-echo "##### Updating Kernels for virtual machines..."
 ###	Installs only if the script is running on Virtual Guests.
+echo "##### Updating Kernels for virtual machines..."
 if [[ $vm == 1 ]]; then
     dnf $install kernel*
+    echo "##### Done #####"
 fi
-echo "##### Done #####"
 
-### Displaying the status of the services activated
 echo
 echo -n "Do you want to check services status [y/n]? "
 read input
 case $input in
     [yY] )	echo
+            ### Displaying the status of the services activated
             echo "Displaying services status..."
             echo
             systemctl status sshd.service
+            echo "##### Done #####"
             echo;;
     * )     echo;;
 esac
