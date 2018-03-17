@@ -6,11 +6,9 @@
 # It must be run as root or sudo privileges
 # Add, comment or uncomment Applications depending on the need to use them
 
-# Syntax: bash Fedora_26_27_Apps_Installation.sh username
-# Where "username" is the user who is being used to install the apps
+# Syntax: bash Fedora_26_27_Apps_Installation.sh
 
 ##### Variables
-user=""
 down_path=""
 install="install -y"
 input=""
@@ -19,30 +17,20 @@ input=""
 clear
 
 if [[ $EUID -ne 0 ]]; then
-    echo "Fail to run the script"
     echo "This script must be run as root" 1>&2
     echo "Exiting the Configuration..."
     echo
     exit 1
 fi
 
-if [[ $# == 0 ]]; then
-    echo "Fail to run the script"
-    echo \"username\" " is missing, please verify and try again"
-    echo "Syntax: "\""$0 " \"username\"\"
-    echo "Exiting the Configuration..."
-    exit 1
-fi
-
-user=$1
-down_path="/home/""$user""/Downloads"
+down_path="/home/""$USER""/Downloads"
 
 if [[ ! -d "$down_path" ]]; then
-	mkdir "$down_path"
-	chown "$user":"$user" "$down_path"
+	mkdir -p "$down_path"
+	chown "$USER":"$USER" "$down_path"
 fi
 
-echo "##### Installing Apps... #####"
+echo "##### Installing Apps..."
 ###	Management tools
 dnf $install system-config-bind
 dnf $install system-config-firewall*
@@ -128,6 +116,8 @@ dnf $install @fonts
 dnf $install freetype
 dnf $install font-manager
 dnf $install xorg-x11-font-utils fontconfig
+dnf $install abattis-cantarell-fonts
+dnf $install mozilla-fira*
 
 ###	Image editors and converters
 dnf $install pinta
