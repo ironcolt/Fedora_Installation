@@ -8,10 +8,6 @@ List of things to do after a fresh installation of Fedora 26-27
 	vi /etc/selinux/config
 	SELINUX=enforcing	==>		SELINUX=disabled
 
-### Copy .bashrc for both, user and root, from backups
-
-### Copy .git files from a backup to user's home
-
 ### Configure profiles for gnome-terminal
 	No showing menu bar by default
     Rename original Profile
@@ -19,7 +15,7 @@ List of things to do after a fresh installation of Fedora 26-27
     Clone the default profile to create a new one "Gray"
     Profile "Gray"
 		General
-			Font monospace regular 10
+			Font fira mono regular 10
 			115 columns x 25 rows
 			Rewrap on resize actived
 		Colors
@@ -56,11 +52,18 @@ List of things to do after a fresh installation of Fedora 26-27
 
 ### Run script "Fedora_26_27_Apps_Installation"
 
+### Copy .bashrc for both, user and root, from backups
+
+### Copy .git files from a backup to user's home
+
+### Install vim
+	dnf install vim
+
+### If installing a Virtual machine
+    Insert and run Guest Additions Disk and reboot
+
 ### Manually, install, if needed:
     LibreOffice
     Ffmpeg from git, following the script:
         "Install_Ffmpeg_from_Git"
     Install Video editor "Lightworks"
-
-### Install vim
-	dnf install vim
