@@ -258,6 +258,7 @@ dnf $install k3b-extras-freeworld
 ###	Stuff
 ###	Add the lines for the Apps you want to install here using the Syntax
 ###	"dnf $install app_name"
+dnf $install vim-enhanced
 echo
 echo
 echo "##### Done #####"
