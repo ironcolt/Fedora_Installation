@@ -13,6 +13,7 @@ down_path=""
 install="install -y"
 input=""
 repo_path=""
+user=""
 
 ##### Begin
 clear
@@ -24,11 +25,12 @@ if [[ $EUID -ne 0 ]]; then
     exit 1
 fi
 
-down_path="/home/""$USER""/Downloads"
+user=$(who am i | awk '{print $1}')
+down_path="/home/""$user""/Downloads"
 
 if [[ ! -d "$down_path" ]]; then
 	mkdir -p "$down_path"
-	chown "$USER":"$USER" "$down_path"
+	chown "$user":"$user" "$down_path"
 fi
 
 ### Installing additional repos
@@ -92,6 +94,7 @@ dnf $install arj lzma lzop bzip2 lrzip xz
 ### To install rar
 wget -O "$down_path"/cert-forensics-tools-release-$(rpm -E %fedora).rpm https://forensics.cert.org/cert-forensics-tools-release-$(rpm -E %fedora).rpm
 
+chown "$user":"$user" "$down_path"/cert-forensics-tools-release-$(rpm -E %fedora).rpm
 rpm -Uvh "$down_path"/cert-forensics-tools-release-$(rpm -E %fedora)*rpm
 
 dnf --enablerepo=forensics $install rar
@@ -99,6 +102,7 @@ dnf --enablerepo=forensics $install rar
 ###	Acrobat reader
 wget -O "$down_path"/AdbeRdr9.5.5-1_i486linux_enu.rpm http://ardownload.adobe.com/pub/adobe/reader/unix/9.x/9.5.5/enu/AdbeRdr9.5.5-1_i486linux_enu.rpm
 
+chown "$user":"$user" "$down_path"/AdbeRdr9.5.5-1_i486linux_enu.rpm
 dnf $install "$down_path"/AdbeRdr9.5.5-1_i486linux_enu.rpm
 
 ###	Utility tools needed by the system
@@ -139,9 +143,14 @@ dnf $install cdw
 
 ###	Font package and Microsoft package
 dnf $install cabextract
+
 ##	dnf $install https://downloads.sourceforge.net/project/mscorefonts2/rpms/msttcore-fonts-installer-2.6-1.noarch.rpm
+
 wget -O "$down_path"/msttcore-fonts-installer-2.6-1.noarch.rpm https://downloads.sourceforge.net/project/mscorefonts2/rpms/msttcore-fonts-installer-2.6-1.noarch.rpm
+
+chown "$user":"$user"  "$down_path"/msttcore-fonts-installer-2.6-1.noarch.rpm
 dnf $install "$down_path"/msttcore-fonts-installer-2.6-1.noarch.rpm
+
 dnf $install @fonts
 dnf $install freetype
 dnf $install font-manager
@@ -190,9 +199,14 @@ dnf $install DVDRipOMatic
 
 ###	Internet
 dnf $install firefox
+
 ##	dnf $install https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+
 wget -O "$down_path"/google-chrome-stable_current_x86_64.rpm https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+
+chown "$user":"$user"  "$down_path"/google-chrome-stable_current_x86_64.rpm
 dnf $install "$down_path"/google-chrome-stable_current_x86_64.rpm
+
 ##	dnf $install opera-stable
 ##	dnf $install chromium
 ##	dnf $install vivaldi-stable
@@ -204,13 +218,23 @@ dnf $install ktorrent
 dnf $install transmission
 dnf $install icedtea-web
 dnf $install https://repo.skype.com/latest/skypeforlinux-64.rpm
+
 ##	dnf $install http://linuxdownload.adobe.com/linux/x86_64/adobe-release-x86_64-1.0-1.noarch.rpm
+
 wget -O "$down_path"/adobe-release-x86_64-1.0-1.noarch.rpm http://linuxdownload.adobe.com/linux/x86_64/adobe-release-x86_64-1.0-1.noarch.rpm
+
+chown "$user":"$user"  "$down_path"/adobe-release-x86_64-1.0-1.noarch.rpm
 dnf $install "$down_path"/adobe-release-x86_64-1.0-1.noarch.rpm
 rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-adobe-linux
+
 dnf $install flash-plugin
 dnf $install flash-player-ppapi
 dnf $install freshplayerplugin
+
+wget -O "$down_path"/teamviewer.x86_64.rpm  https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm
+
+chown "$user":"$user"  "$down_path"/teamviewer.x86_64.rpm
+dnf $install "$down_path"/teamviewer.x86_64.rpm
 
 ###	Office
 dnf $install scribus
