@@ -143,7 +143,8 @@ dnf $install digikam
 dnf $install rawtherapee
 
 ###	Media players and converters
-dnf $install audacity-nonfree
+dnf $install audacity audacity-manual
+dnf $install audacious audacious-devel audacious-libs audacious-plugins
 dnf $install spotify-client
 dnf $install clementine
 dnf $install soundconverter
@@ -322,7 +323,9 @@ esac
 ### Finishes script
 echo
 echo
+echo
 echo "##### Done The Installation of Apps #####"
+echo
 echo
 echo
 echo "*************************************************************"
