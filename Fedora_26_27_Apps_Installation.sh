@@ -57,6 +57,7 @@ dnf $install foremost
 dnf $install fuse fuse-exfat exfat-utils fuse-ntfs-3g
 dnf $install ifuse hfsutils hfsplus-tools
 dnf $install zfs-fuse fuse-sshfs fuse-encfs
+dnf $install cmake
 
 ###	Tools for sharing different type of filesystems
 dnf $install samba samba-client samba-common samba-winbind samba-winbind-clients
@@ -82,13 +83,13 @@ wget -O "$down_path"/AdbeRdr9.5.5-1_i486linux_enu.rpm http://ardownload.adobe.co
 
 dnf $install "$down_path"/AdbeRdr9.5.5-1_i486linux_enu.rpm
 
-###	Basic tools needed by the system
+###	Utility tools needed by the system
 dnf $install lshw lshw-gui
 dnf $install screenfetch
 dnf $install gucharmap
 dnf $install gedit
 dnf $install geany
-dnf $install brasero
+dnf $install brasero*
 dnf $install okular
 dnf $install shutter
 dnf $install alien
@@ -100,12 +101,23 @@ dnf $install guake
 dnf $install kate
 dnf $install lshw*
 dnf $install youtube-dl
-dnf $install dconf-editor dconf
 dnf $install filezilla
 dnf $install tigervnc
+dnf $install tigervnc-server
 dnf $install rednotebook
 dnf $install ktorrent
 dnf $install k3b*
+dnf $install colordiff
+dnf $install diffutils
+dnf $install alacarte
+dnf $install calibre
+dnf $install celestia
+dnf $install colord
+dnf $install colord-extra-profiles
+dnf $install easytag*
+dnf $install freecad*
+dnf $install vim-enhanced
+dnf $install cdw
 
 ###	Font package and Microsoft package
 dnf $install cabextract
@@ -116,6 +128,7 @@ dnf $install @fonts
 dnf $install freetype
 dnf $install font-manager
 dnf $install xorg-x11-font-utils fontconfig
+dnf $install fontconfig-devel*
 dnf $install abattis-cantarell-fonts
 dnf $install mozilla-fira*
 
@@ -129,7 +142,7 @@ dnf $install converseen
 dnf $install digikam
 dnf $install rawtherapee
 
-###	Audio players and converters
+###	Media players and converters
 dnf $install audacity-nonfree
 dnf $install spotify-client
 dnf $install clementine
@@ -137,8 +150,6 @@ dnf $install soundconverter
 dnf $install ffmulticonverter
 dnf $install xmms
 dnf $install amarok*
-
-###	Video players and editors
 dnf $install vlc
 dnf $install openshot
 dnf $install flowblade
@@ -149,6 +160,14 @@ dnf $install mplayer
 dnf $install avidemux
 dnf $install pitivi
 dnf $install blender
+dnf $install dragon
+dnf $install dvd95
+dnf $install DVDAuthorWizard
+dnf $install dvdauthor
+dnf $install dvdbackup
+dnf $install dvdisaster
+dnf $install dvdrip
+dnf $install DVDRipOMatic
 
 ###	Internet
 dnf $install firefox
@@ -215,6 +234,7 @@ dnf $install iftop
 dnf $install hdparm
 dnf $install sysstat
 dnf $install gnome-system-monitor
+dnf $install dstat
 ##	systemctl enable preload.service
 ##	systemctl enable irqbalance.service
 #	systemctl disable fstrim.timer
@@ -258,10 +278,11 @@ dnf $install k3b-extras-freeworld
 ###	Stuff
 ###	Add the lines for the Apps you want to install here using the Syntax
 ###	"dnf $install app_name"
-dnf $install vim-enhanced
 echo
 echo
 echo "##### Done #####"
+echo
+echo
 echo
 
 ###	Cleaning
