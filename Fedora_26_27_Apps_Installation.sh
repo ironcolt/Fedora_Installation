@@ -12,6 +12,7 @@
 down_path=""
 install="install -y"
 input=""
+repo_path=""
 
 ##### Begin
 clear
@@ -28,6 +29,23 @@ down_path="/home/""$USER""/Downloads"
 if [[ ! -d "$down_path" ]]; then
 	mkdir -p "$down_path"
 	chown "$USER":"$USER" "$down_path"
+fi
+
+### Installing additional repos
+if [[ ! -f /etc/yum.repos.d/atom.repo ]]; then
+    repo_path="/etc/yum.repos.d/atom.repo"
+    touch "$repo_path"
+    echo "[helber-atom]" >> "$repo_path"
+    echo "name=Copr repo for atom owned by helber" >> "$repo_path"
+    echo "baseurl=https://copr-be.cloud.fedoraproject.org/results/helber/atom/fedora-$(rpm -E %fedora)"-"$(uname -i)/" >> "$repo_path"
+    echo "type=rpm-md" >> "$repo_path"
+    echo "skip_if_unavailable=True" >> "$repo_path"
+    echo "gpgcheck=0" >> "$repo_path"
+    echo "gpgkey=https://copr-be.cloud.fedoraproject.org/results/helber/atom/pubkey.gpg" >> "$repo_path"
+    echo "repo_gpgcheck=0" >> "$repo_path"
+    echo "enabled=1" >> "$repo_path"
+    echo "enabled_metadata=1" >> "$repo_path"
+    repo_path=""
 fi
 
 echo "##### Installing Apps..."
@@ -208,6 +226,7 @@ dnf $install mediawriter
 dnf $install liveusb-creator
 dnf $install dia
 dnf $install diffuse
+dnf $install atom
 
 ###	Remote access
 dnf $install putty
@@ -311,11 +330,11 @@ case $input in
 			echo "Displaying services status..."
 			echo "Press \"q\" to continue..."
 			echo
-			sudo -u $USER "systemctl status firewalld"
+			sudo -u $USER systemctl status firewalld
 			echo
-			sudo -u $USER "systemctl status smb.service"
+			sudo -u $USER systemctl status smb
 			echo
-			sudo -u $USER "systemctl status cups.service"
+			sudo -u $USER systemctl status cups
 			echo;;
 	* )		echo;;
 esac
