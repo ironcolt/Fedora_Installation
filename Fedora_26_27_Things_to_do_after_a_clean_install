@@ -56,9 +56,6 @@ List of things to do after a fresh installation of Fedora 26-27
 
 ### Copy .git files from a backup to user's home
 
-### Install vim
-	dnf install vim
-
 ### If installing a Virtual machine
     Insert and run Guest Additions Disk and reboot
 
