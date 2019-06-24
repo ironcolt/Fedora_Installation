@@ -259,7 +259,7 @@ dnf $install clusterssh
 
 ###	Security tools
 dnf $install nmap
-dnf $install nmap-frontend.noarch
+dnf $install nmap-frontend
 dnf $install wireshark
 dnf $install traceroute
 dnf $install httrack
