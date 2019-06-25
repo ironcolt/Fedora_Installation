@@ -19,7 +19,7 @@ function Install() {
 	app_name="$1"; echo "Installing ""$app_name"
 	echo
 	sudo dnf $install "$1"; error=$( echo $? )
-	if [[ $error == 1 ]]; then echo; echo "ERROR installing ""$app_name"; echo; echo; fi
+	if [[ $error -ne 0 ]]; then echo; echo "ERROR found when installing ""\"$app_name\""; echo; echo; fi
   echo
 	echo
 }
