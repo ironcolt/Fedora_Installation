@@ -1,12 +1,13 @@
 #!/bin/bash
 
-##### Fedora_26_27_Apps_Installation
+##### Fedora_Apps_Installation
 
-# Script to install useful applications for Fedora 26/27
-# It must be run as root or sudo privileges
+# Script to install useful applications for Fedora
+# It must be run as root or with sudo privileges
 # Add, comment or uncomment Applications depending on the need to use them
 
 # Syntax: bash Fedora_26_27_Apps_Installation.sh
+
 
 ##### Variables
 down_path=""
@@ -15,18 +16,34 @@ input=""
 repo_path=""
 user=""
 
+
+##### Functions
+function Install() {
+	app_name="$1"; echo "Installing ""$app_name"
+	echo
+	sudo install "$1"; error=$( echo $? )
+	if [[ $error -ne 0 ]]; then echo; echo "ERROR found when installing ""\"$app_name\""; echo; echo; fi
+  echo
+	echo
+}
+
+
+
 ##### Begin
 clear
 
 if [[ $EUID -ne 0 ]]; then
-    echo "This script must be run as root" 1>&2
+    echo "This script must be run as root or with sudo privileges" 1>&2
     echo "Exiting the Configuration..."
     echo
     exit 1
 fi
 
-user=$(who am i | awk '{print $1}')
+echo "USER = "$USER
+user=$(whoami | awk '{print $1}')
+echo "user = "$user
 down_path="/home/""$user""/Downloads"
+echo "Down_Path = "$down
 
 if [[ ! -d "$down_path" ]]; then
 	mkdir -p "$down_path"
@@ -34,251 +51,252 @@ if [[ ! -d "$down_path" ]]; then
 fi
 
 ### Installing additional repos
-if [[ ! -f /etc/yum.repos.d/atom.repo ]]; then
-    repo_path="/etc/yum.repos.d/atom.repo"
-    touch "$repo_path"
-    echo "[helber-atom]" >> "$repo_path"
-    echo "name=Copr repo for atom owned by helber" >> "$repo_path"
-    echo "baseurl=https://copr-be.cloud.fedoraproject.org/results/helber/atom/fedora-$(rpm -E %fedora)"-"$(uname -i)/" >> "$repo_path"
-    echo "type=rpm-md" >> "$repo_path"
-    echo "skip_if_unavailable=True" >> "$repo_path"
-    echo "gpgcheck=0" >> "$repo_path"
-    echo "gpgkey=https://copr-be.cloud.fedoraproject.org/results/helber/atom/pubkey.gpg" >> "$repo_path"
-    echo "repo_gpgcheck=0" >> "$repo_path"
-    echo "enabled=1" >> "$repo_path"
-    echo "enabled_metadata=1" >> "$repo_path"
-    repo_path=""
-fi
+#if [[ ! -f /etc/yum.repos.d/atom.repo ]]; then
+#    repo_path="/etc/yum.repos.d/atom.repo"
+#    touch "$repo_path"
+#    echo "[helber-atom]" >> "$repo_path"
+#    echo "name=Copr repo for atom owned by helber" >> "$repo_path"
+#    echo "baseurl=https://copr-be.cloud.fedoraproject.org/results/helber/atom/fedora-$(rpm -E %fedora)"-"$(uname -i)/" >> "$repo_path"
+#    echo "type=rpm-md" >> "$repo_path"
+#    echo "skip_if_unavailable=True" >> "$repo_path"
+#    echo "gpgcheck=0" >> "$repo_path"
+#    echo "gpgkey=https://copr-be.cloud.fedoraproject.org/results/helber/atom/pubkey.gpg" >> "$repo_path"
+#    echo "repo_gpgcheck=0" >> "$repo_path"
+#    echo "enabled=1" >> "$repo_path"
+#    echo "enabled_metadata=1" >> "$repo_path"
+#    repo_path=""
+#fi
 
 echo "##### Installing Apps..."
 ###	Management tools
-dnf $install system-config-bind
-dnf $install system-config-firewall*
-dnf $install system-config-httpd
-dnf $install system-config-kdump
-dnf $install system-config-keyboard*
-dnf $install system-config-language
-dnf $install system-config-printer*
-dnf $install system-config-repo
-dnf $install system-config-rootpassword
-dnf $install system-config-users*
-dnf $install util-linux-user
-dnf $install firewall-config
-dnf $install dconf dconf-editor
-dnf $install net-tools ethtool NetworkManager-tui
-dnf $install wine
+Install system-config-bind
+exit
+Install system-config-firewall*
+Install system-config-httpd
+Install system-config-kdump
+Install system-config-keyboard*
+Install system-config-language
+Install system-config-printer*
+Install system-config-repo
+Install system-config-rootpassword
+Install system-config-users*
+Install util-linux-user
+Install firewall-config
+Install "dconf dconf-editor"
+Install "net-tools ethtool NetworkManager-tui"
+Install wine
 systemctl enable firewalld.service
 
 ###	File system management tools
-dnf $install gnome-disk-utility
-dnf $install gparted
-dnf $install smartmontools
-dnf $install foremost
-dnf $install fuse fuse-exfat exfat-utils fuse-ntfs-3g
-dnf $install ifuse hfsutils hfsplus-tools
-dnf $install zfs-fuse fuse-sshfs fuse-encfs
-dnf $install cmake
+Install gnome-disk-utility
+Install gparted
+Install smartmontools
+Install foremost
+Install "fuse fuse-exfat exfat-utils fuse-ntfs-3g"
+Install "ifuse hfsutils hfsplus-tools"
+Install "zfs-fuse fuse-sshfs fuse-encfs"
+Install cmake
 
 ###	Tools for sharing different type of filesystems
-dnf $install samba samba-client samba-common samba-winbind samba-winbind-clients
+Install "samba samba-client samba-common samba-winbind samba-winbind-clients"
 
 ###	Running samba service
 systemctl enable smb.service
 systemctl start smb.service
 
 ###	Archiving Tools
-dnf $install unzip p7zip*
-dnf $install unrar
-dnf $install arj lzma lzop bzip2 lrzip xz
+Install "unzip p7zip*"
+Install unrar
+Install "arj lzma lzop bzip2 lrzip xz"
 
 ### To install rar
-wget -O "$down_path"/cert-forensics-tools-release-$(rpm -E %fedora).rpm https://forensics.cert.org/cert-forensics-tools-release-$(rpm -E %fedora).rpm
+#wget -O "$down_path"/cert-forensics-tools-release-$(rpm -E %fedora).rpm https://forensics.cert.org/cert-forensics-tools-release-$(rpm -E %fedora).rpm
 
-chown "$user":"$user" "$down_path"/cert-forensics-tools-release-$(rpm -E %fedora).rpm
-rpm -Uvh "$down_path"/cert-forensics-tools-release-$(rpm -E %fedora)*rpm
+#chown "$user":"$user" "$down_path"/cert-forensics-tools-release-$(rpm -E %fedora).rpm
+#rpm -Uvh "$down_path"/cert-forensics-tools-release-$(rpm -E %fedora)*rpm
 
-dnf --enablerepo=forensics $install rar
+#dnf --enablerepo=forensics $install rar
 
 ###	Acrobat reader
-wget -O "$down_path"/AdbeRdr9.5.5-1_i486linux_enu.rpm http://ardownload.adobe.com/pub/adobe/reader/unix/9.x/9.5.5/enu/AdbeRdr9.5.5-1_i486linux_enu.rpm
+#wget -O "$down_path"/AdbeRdr9.5.5-1_i486linux_enu.rpm http://ardownload.adobe.com/pub/adobe/reader/unix/9.x/9.5.5/enu/AdbeRdr9.5.5-1_i486linux_enu.rpm
 
-chown "$user":"$user" "$down_path"/AdbeRdr9.5.5-1_i486linux_enu.rpm
-dnf $install "$down_path"/AdbeRdr9.5.5-1_i486linux_enu.rpm
+#chown "$user":"$user" "$down_path"/AdbeRdr9.5.5-1_i486linux_enu.rpm
+#Install "$down_path"/AdbeRdr9.5.5-1_i486linux_enu.rpm
 
 ###	Utility tools needed by the system
-dnf $install lshw lshw-gui
-dnf $install screenfetch
-dnf $install gucharmap
-dnf $install gedit
-dnf $install geany
-dnf $install brasero*
-dnf $install okular
-dnf $install shutter
-dnf $install alien
-dnf $install gnome-calendar
-dnf $install catfish
-dnf $install nautilus nautilus-extensions
-dnf $install gwenview
-dnf $install guake
-dnf $install kate
-dnf $install lshw*
-dnf $install youtube-dl
-dnf $install filezilla
-dnf $install tigervnc
-dnf $install tigervnc-server
-dnf $install rednotebook
-dnf $install ktorrent
-dnf $install k3b*
-dnf $install colordiff
-dnf $install diffutils
-dnf $install alacarte
-dnf $install calibre
-dnf $install celestia
-dnf $install colord
-dnf $install colord-extra-profiles
-dnf $install easytag*
-dnf $install freecad*
-dnf $install vim-enhanced
-dnf $install cdw
+Install "lshw lshw-gui"
+Install screenfetch
+Install gucharmap
+Install gedit
+Install geany
+Install brasero*
+Install okular
+Install shutter
+Install alien
+Install gnome-calendar
+Install catfish
+Install "nautilus nautilus-extensions"
+Install gwenview
+Install guake
+Install kate
+Install lshw*
+Install youtube-dl
+Install filezilla
+Install tigervnc
+Install tigervnc-server
+Install rednotebook
+Install ktorrent
+Install k3b*
+Install colordiff
+Install diffutils
+Install alacarte
+Install calibre
+Install celestia
+Install colord
+Install colord-extra-profiles
+Install easytag*
+Install freecad*
+Install vim-enhanced
+Install cdw
 
 ###	Font package and Microsoft package
-dnf $install cabextract
+Install cabextract
 
-##	dnf $install https://downloads.sourceforge.net/project/mscorefonts2/rpms/msttcore-fonts-installer-2.6-1.noarch.rpm
+##	Install https://downloads.sourceforge.net/project/mscorefonts2/rpms/msttcore-fonts-installer-2.6-1.noarch.rpm
 
-wget -O "$down_path"/msttcore-fonts-installer-2.6-1.noarch.rpm https://downloads.sourceforge.net/project/mscorefonts2/rpms/msttcore-fonts-installer-2.6-1.noarch.rpm
+#wget -O "$down_path"/msttcore-fonts-installer-2.6-1.noarch.rpm https://downloads.sourceforge.net/project/mscorefonts2/rpms/msttcore-fonts-installer-2.6-1.noarch.rpm
 
-chown "$user":"$user"  "$down_path"/msttcore-fonts-installer-2.6-1.noarch.rpm
-dnf $install "$down_path"/msttcore-fonts-installer-2.6-1.noarch.rpm
+#chown "$user":"$user"  "$down_path"/msttcore-fonts-installer-2.6-1.noarch.rpm
+#Install "$down_path"/msttcore-fonts-installer-2.6-1.noarch.rpm
 
-dnf $install @fonts
-dnf $install freetype
-dnf $install font-manager
-dnf $install xorg-x11-font-utils fontconfig
-dnf $install fontconfig-devel*
-dnf $install abattis-cantarell-fonts
-dnf $install mozilla-fira*
+Install @fonts
+Install freetype
+Install font-manager
+Install "xorg-x11-font-utils fontconfig"
+Install fontconfig-devel*
+Install abattis-cantarell-fonts
+Install mozilla-fira*
 
 ###	Image editors and converters
-dnf $install pinta
-dnf $install krita
-dnf $install gimp
-dnf $install shotwell
-dnf $install darktable
-dnf $install converseen
-dnf $install digikam
-dnf $install rawtherapee
+Install pinta
+Install krita
+Install gimp
+Install shotwell
+Install darktable
+Install converseen
+Install digikam
+Install rawtherapee
 
 ###	Media players and converters
-dnf $install audacity audacity-manual
-dnf $install audacious audacious-devel audacious-libs audacious-plugins
-dnf $install spotify-client
-dnf $install clementine
-dnf $install soundconverter
-dnf $install ffmulticonverter
-dnf $install xmms
-dnf $install amarok*
-dnf $install vlc
-dnf $install openshot
-dnf $install flowblade
-dnf $install simplescreenrecorder
-dnf $install vokoscreen
-dnf $install cheese
-dnf $install mplayer
-dnf $install avidemux
-dnf $install pitivi
-dnf $install blender
-dnf $install dragon
-dnf $install dvd95
-dnf $install DVDAuthorWizard
-dnf $install dvdauthor
-dnf $install dvdbackup
-dnf $install dvdisaster
-dnf $install dvdrip
-dnf $install DVDRipOMatic
+Install "audacity audacity-manual"
+Install "audacious audacious-devel audacious-libs audacious-plugins"
+Install spotify-client
+Install clementine
+Install soundconverter
+Install ffmulticonverter
+Install xmms
+Install amarok*
+Install vlc
+Install openshot
+Install flowblade
+Install simplescreenrecorder
+Install vokoscreen
+Install cheese
+Install mplayer
+Install avidemux
+Install pitivi
+Install blender
+Install dragon
+Install dvd95
+Install DVDAuthorWizard
+Install dvdauthor
+Install dvdbackup
+Install dvdisaster
+Install dvdrip
+Install DVDRipOMatic
 
 ###	Internet
-dnf $install firefox
+Install firefox
 
-##	dnf $install https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+##	Install https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
 
-wget -O "$down_path"/google-chrome-stable_current_x86_64.rpm https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+#wget -O "$down_path"/google-chrome-stable_current_x86_64.rpm https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
 
-chown "$user":"$user"  "$down_path"/google-chrome-stable_current_x86_64.rpm
-dnf $install "$down_path"/google-chrome-stable_current_x86_64.rpm
+#chown "$user":"$user"  "$down_path"/google-chrome-stable_current_x86_64.rpm
+#Install "$down_path"/google-chrome-stable_current_x86_64.rpm
 
-##	dnf $install opera-stable
-##	dnf $install chromium
-##	dnf $install vivaldi-stable
-##	dnf $install torbrowser-launcher
-##	dnf $install thunderbird
-##	dnf $install qbittorrent
-dnf $install filezilla
-dnf $install ktorrent
-dnf $install transmission
-dnf $install icedtea-web
-dnf $install https://repo.skype.com/latest/skypeforlinux-64.rpm
+##	Install opera-stable
+##	Install chromium
+##	Install vivaldi-stable
+##	Install torbrowser-launcher
+##	Install thunderbird
+##	Install qbittorrent
+Install filezilla
+Install ktorrent
+Install transmission
+Install icedtea-web
+#Install https://repo.skype.com/latest/skypeforlinux-64.rpm
 
-##	dnf $install http://linuxdownload.adobe.com/linux/x86_64/adobe-release-x86_64-1.0-1.noarch.rpm
+##	Install http://linuxdownload.adobe.com/linux/x86_64/adobe-release-x86_64-1.0-1.noarch.rpm
 
-wget -O "$down_path"/adobe-release-x86_64-1.0-1.noarch.rpm http://linuxdownload.adobe.com/linux/x86_64/adobe-release-x86_64-1.0-1.noarch.rpm
+#wget -O "$down_path"/adobe-release-x86_64-1.0-1.noarch.rpm http://linuxdownload.adobe.com/linux/x86_64/adobe-release-x86_64-1.0-1.noarch.rpm
 
-chown "$user":"$user"  "$down_path"/adobe-release-x86_64-1.0-1.noarch.rpm
-dnf $install "$down_path"/adobe-release-x86_64-1.0-1.noarch.rpm
-rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-adobe-linux
+#chown "$user":"$user"  "$down_path"/adobe-release-x86_64-1.0-1.noarch.rpm
+#Install "$down_path"/adobe-release-x86_64-1.0-1.noarch.rpm
+#rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-adobe-linux
 
-dnf $install flash-plugin
-dnf $install flash-player-ppapi
-dnf $install freshplayerplugin
+Install flash-plugin
+Install flash-player-ppapi
+Install freshplayerplugin
 
-wget -O "$down_path"/teamviewer.x86_64.rpm  https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm
+#wget -O "$down_path"/teamviewer.x86_64.rpm  https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm
 
-chown "$user":"$user"  "$down_path"/teamviewer.x86_64.rpm
-dnf $install "$down_path"/teamviewer.x86_64.rpm
+#chown "$user":"$user"  "$down_path"/teamviewer.x86_64.rpm
+#Install "$down_path"/teamviewer.x86_64.rpm
 
 ###	Office
-dnf $install scribus
-dnf $install keepass
-dnf $install kpcli
-dnf $install simple-scan
-dnf $install cups
+Install scribus
+Install keepass
+Install kpcli
+Install simple-scan
+Install cups
 systemctl enable cups.service
 
 ###	Development tools
-dnf $install unetbootin
-dnf $install mediawriter
-dnf $install liveusb-creator
-dnf $install dia
-dnf $install diffuse
-dnf $install atom
+Install unetbootin
+Install mediawriter
+Install liveusb-creator
+Install dia
+Install diffuse
+Install atom
 
 ###	Remote access
-dnf $install putty
-dnf $install openssh-server openssh-clients
-dnf $install clusterssh
+Install putty
+Install openssh-server openssh-clients
+Install clusterssh
 
 ###	Security tools
-dnf $install nmap
-dnf $install nmap-frontend
-dnf $install wireshark
-dnf $install traceroute
-dnf $install httrack
-dnf $install tcpdump
+Install nmap
+Install nmap-frontend
+Install wireshark
+Install traceroute
+Install httrack
+Install tcpdump
 
 ###	Performance and monitoring tools
-dnf $install bleachbit	    ## Junk cleaner
-dnf $install preload		## Daemon that gathers info from the processes running on the system
-dnf $install irqbalance     ## Daemon that evenly distributes IRQ loads across multiple cpu's
-dnf $install tuned			## Tunes dynamically the system
-dnf $install glances		## Gets info from the system
-dnf $install htop
-dnf $install itop
-dnf $install iotop
-dnf $install iftop
-dnf $install hdparm
-dnf $install sysstat
-dnf $install gnome-system-monitor
-dnf $install dstat
+Install bleachbit	    ## Junk cleaner
+Install preload		## Daemon that gathers info from the processes running on the system
+Install irqbalance     ## Daemon that evenly distributes IRQ loads across multiple cpu's
+Install tuned			## Tunes dynamically the system
+Install glances		## Gets info from the system
+Install htop
+Install itop
+Install iotop
+Install iftop
+Install hdparm
+Install sysstat
+Install gnome-system-monitor
+Install dstat
 ##	systemctl enable preload.service
 ##	systemctl enable irqbalance.service
 #	systemctl disable fstrim.timer
@@ -291,37 +309,37 @@ dnf $install dstat
 #	systemctl disable crond chronyd iscsi multipathd
 
 ###	Multimedia Codecs
-dnf $install gstreamer1
-dnf $install gstreamer-plugins-base
-dnf $install gstreamer1-plugins-base
-dnf $install gstreamer1-plugins-base-tools
-dnf $install gstreamer-plugins-good-extras
-dnf $install gstreamer1-plugins-good-extras
-dnf $install gstreamer-plugins-ugly
-dnf $install gstreamer1-plugins-ugly
-dnf $install gstreamer1-plugins-base
-dnf $install gstreamer1-plugins-good
-dnf $install gstreamer-plugins-bad
-dnf $install gstreamer-plugins-bad-nonfree
-dnf $install gstreamer1-plugins-bad-free
-dnf $install gstreamer1-plugins-bad-freeworld
-dnf $install gstreamer1-plugins-bad-free-extras
-dnf $install gstreamer-plugins-bad-free-extras
-dnf $install gstreamer1-libav
-dnf $install gstreamer-ffmpeg
-dnf $install ffmpeg
-dnf $install mencoder
-dnf $install mplayer
-dnf $install libdvdread
-dnf $install libdvdnav
-dnf $install lsdvd
-dnf $install xine-lib-extras
-dnf $install xine-lib-extras-freeworld
-dnf $install k3b-extras-freeworld
+Install gstreamer1
+Install gstreamer-plugins-base
+Install gstreamer1-plugins-base
+Install gstreamer1-plugins-base-tools
+Install gstreamer-plugins-good-extras
+Install gstreamer1-plugins-good-extras
+Install gstreamer-plugins-ugly
+Install gstreamer1-plugins-ugly
+Install gstreamer1-plugins-base
+Install gstreamer1-plugins-good
+Install gstreamer-plugins-bad
+Install gstreamer-plugins-bad-nonfree
+Install gstreamer1-plugins-bad-free
+Install gstreamer1-plugins-bad-freeworld
+Install gstreamer1-plugins-bad-free-extras
+Install gstreamer-plugins-bad-free-extras
+Install gstreamer1-libav
+Install gstreamer-ffmpeg
+Install ffmpeg
+Install mencoder
+Install mplayer
+Install libdvdread
+Install libdvdnav
+Install lsdvd
+Install xine-lib-extras
+Install xine-lib-extras-freeworld
+Install k3b-extras-freeworld
 
 ###	Stuff
 ###	Add the lines for the Apps you want to install here using the Syntax
-###	"dnf $install app_name"
+###	"Install app_name"
 echo
 echo
 echo "##### Done #####"
