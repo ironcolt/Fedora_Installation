@@ -19,9 +19,9 @@ user=""
 
 ##### Functions
 function Install() {
-	app_name="$1"; echo "Installing ""$app_name"
+	app_name=$1; echo "############### Installing ""$app_name"" ###############"
 	echo
-	sudo install "$1"; error=$( echo $? )
+	sudo dnf $install $1; error=$( echo $? )
 	if [[ $error -ne 0 ]]; then echo; echo "ERROR found when installing ""\"$app_name\""; echo; echo; fi
   echo
 	echo
@@ -39,11 +39,8 @@ if [[ $EUID -ne 0 ]]; then
     exit 1
 fi
 
-echo "USER = "$USER
 user=$(whoami | awk '{print $1}')
-echo "user = "$user
 down_path="/home/""$user""/Downloads"
-echo "Down_Path = "$down
 
 if [[ ! -d "$down_path" ]]; then
 	mkdir -p "$down_path"
