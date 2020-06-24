@@ -99,10 +99,11 @@ echo "*************************************************************************"
 echo; cd "$cur_dir"; echo
 
 Install_gz LibreOffice
-tar xzvf "$local_gz"/"$app_name" -C "$opt_dir"/
-app_name_short=$(ls "$opt_dir"/ | grep -i "LibreOffice_")
-cur_dir=$(pwd); cd "$opt_dir"/"$app_name_short"/RPMS
-sudo dnf install -y *.rpm; error=$( echo $? )
+tar xzvf "$local_gz"/"$app_name" -C "$temp_dir"/
+app_name_short=$(ls "$temp_dir"/ | grep -i "LibreOffice_")
+cur_dir=$(pwd); cd "$temp_dir"/"$app_name_short"/
+./install -U RPMS/ ~/bin/; error=$( echo $? )
+sudo ln -s ~/bin/opt/libreoffice6.4/program/soffice /usr/bin/libreoffice6.4
 if [[ $error == 0 ]]; then
   echo; echo "Libre Office was succesfully installed under \"/usr/bin/libreoffice6.4\""
   echo
@@ -110,6 +111,7 @@ else
   echo "ERROR found when installing ""\"$app_name\""
   echo; echo; is_error=1
 fi
+
 
 cd $cur_dir; echo
 
