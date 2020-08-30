@@ -47,27 +47,11 @@ if [[ ! -d "$down_path" ]]; then
 	chown "$user":"$user" "$down_path"
 fi
 
-### Installing additional repos
-#if [[ ! -f /etc/yum.repos.d/atom.repo ]]; then
-#    repo_path="/etc/yum.repos.d/atom.repo"
-#    touch "$repo_path"
-#    echo "[helber-atom]" >> "$repo_path"
-#    echo "name=Copr repo for atom owned by helber" >> "$repo_path"
-#    echo "baseurl=https://copr-be.cloud.fedoraproject.org/results/helber/atom/fedora-$(rpm -E %fedora)"-"$(uname -i)/" >> "$repo_path"
-#    echo "type=rpm-md" >> "$repo_path"
-#    echo "skip_if_unavailable=True" >> "$repo_path"
-#    echo "gpgcheck=0" >> "$repo_path"
-#    echo "gpgkey=https://copr-be.cloud.fedoraproject.org/results/helber/atom/pubkey.gpg" >> "$repo_path"
-#    echo "repo_gpgcheck=0" >> "$repo_path"
-#    echo "enabled=1" >> "$repo_path"
-#    echo "enabled_metadata=1" >> "$repo_path"
-#    repo_path=""
-#fi
 
 echo "##### Installing Apps..."
+
 ###	Management tools
 Install system-config-bind
-exit
 Install system-config-firewall*
 Install system-config-httpd
 Install system-config-kdump

@@ -56,11 +56,21 @@ List of things to do after a fresh installation of Fedora 26-27
 
 ### Copy .git files from a backup to user's home
 
+### Run gnome-tweak-tool and configure as follows:
+    
+
 ### If installing a Virtual machine
     Insert and run Guest Additions Disk and reboot
 
+### Install following apps using Fedy installer.
+    PyCharm Community Edition
+    Eclipse for C/C++
+    Virtualbox (possibly)
+    Dropbox (possibly)
+    Multimedia codecs (possibly)
+
 ### Manually, install, if needed:
-    LibreOffice
+    Other version of LibreOffice
     Ffmpeg from git, following the script:
         "Install_Ffmpeg_from_Git"
     Install Video editor "Lightworks"

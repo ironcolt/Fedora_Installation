@@ -30,7 +30,7 @@ function Install() {
 clear
 
 if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root" 1>&2
+   echo "This script must be run as root or with sudo privileges" 1>&2
    echo "Exiting the Configuration..."
    echo
    exit 1
