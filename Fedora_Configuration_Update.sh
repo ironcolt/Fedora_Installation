@@ -19,7 +19,7 @@ function Install() {
 	app_name="$1"; echo "Installing ""$app_name"
 	echo
 	sudo dnf $install "$1"; error=$( echo $? )
-	if [[ $error -ne 0 ]]; then echo; echo "ERROR found when installing ""\"$app_name\""; echo; echo; fi
+	if [[ $error -ne 0 ]]; then echo; echo "ERROR when installing ""\"$app_name\""; echo; echo; fi
   echo
 	echo
 }
@@ -30,7 +30,7 @@ function Install() {
 clear
 
 if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root or with sudo privileges" 1>&2
+   echo "This script must be run as root" 1>&2
    echo "Exiting the Configuration..."
    echo
    exit 1
